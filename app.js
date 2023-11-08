@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv').config(); //put this before the database file...
 const sequelize = require('./util/database');
+const path = require('path');
 
 const userRoutes = require('./routes/user');
 const expenseRoutes = require('./routes/expense');
@@ -33,6 +34,11 @@ app.use('/purchase',purchaseRoutes);
 app.use('/premium',premiumRoutes);
 
 app.use('/password',passwordRoutes);
+
+app.use((req, res)=>{
+    console.log('url -->', req.url);
+    res.sendFile(path.join(__dirname, `public/${req.url}`))
+})
 
 User.hasMany(Expense);
 Expense.belongsTo(User);
